@@ -1,0 +1,30 @@
+name: Auto Video Render
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build-and-render:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Install dependencies
+        run: |
+          pip install moviepy
+
+      - name: Run render script
+        run: |
+          python generate_video.py
+
+      - name: Upload result
+        uses: actions/upload-artifact@v4
+        with:
+          name: final-video
+          path: output.mp4
